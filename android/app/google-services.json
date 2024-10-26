@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "615065649783",
+    "project_id": "job-portal-gb",
+    "storage_bucket": "job-portal-gb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:615065649783:android:88f049f39a4d43514a3c72",
+        "android_client_info": {
+          "package_name": "com.jobportalgb.jobfinder"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDiGlhKyxJJ8RE8gxl4bhet9UTCIe8U-g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
