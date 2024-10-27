@@ -22,10 +22,11 @@ class CustomTextField extends StatelessWidget {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     // Define colors based on theme
-    final Color borderColor = isDarkMode ? Colors.white : Colors.black;
-    final Color focusedBorderColor = isDarkMode ? Colors.white : Colors.black;
+    final Color borderColor = isDarkMode ? Colors.white : Colors.blue.shade400;
+    final Color focusedBorderColor =
+        isDarkMode ? Colors.white : Colors.blue.shade400;
     final Color labelColor = isDarkMode ? Colors.white : Colors.black;
-    final Color textColor = isDarkMode ? Colors.white : Colors.black87;
+    final Color textColor = isDarkMode ? Colors.white : Colors.blue.shade400;
 
     return TextField(
       controller: controller,

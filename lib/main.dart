@@ -1,9 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-// import 'package:jobfinder/auth/login_screen.dart';
-// import 'package:jobfinder/auth/options.dart';
-// import 'package:jobfinder/auth/register_as_jobseeker_screen.dart';
-import 'package:jobfinder/auth/register_as_rec_screen.dart';
+import 'package:jobfinder/auth/email_verification.dart';
+// import 'package:jobfinder/auth/forget_password.dart';
+// // import 'package:jobfinder/auth/login_screen.dart';
+// // import 'package:jobfinder/auth/options.dart';
+// // import 'package:jobfinder/auth/register_as_jobseeker_screen.dart';
+// import 'package:jobfinder/auth/register_as_rec_screen.dart';
 import 'package:jobfinder/provider/theme_provider.dart';
 // import 'package:jobfinder/screens/home_screen.dart';
 import 'package:jobfinder/themes/theme.dart';
@@ -31,7 +33,7 @@ class MyApp extends StatelessWidget {
       theme: lightTheme,
       darkTheme: darkTheme,
       themeMode: themeProvider.themeMode,
-      home: RegisterAsRecScreen(),
+      home: EmailVerificationScreen(),
     );
   }
 }

@@ -7,8 +7,8 @@ class AuthServices {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   // Sign Up Method
-  Future<void> signUpUser(String email, String password, String name,
-      String age, String gender) async {
+  Future<void> signUpUser(
+      String email, String password, String name, String phone) async {
     try {
       UserCredential userCredential =
           await _auth.createUserWithEmailAndPassword(
@@ -22,8 +22,7 @@ class AuthServices {
           .doc(userCredential.user!.uid)
           .set({
         'name': name,
-        'age': age,
-        'gender': gender,
+        'age': phone,
         'email': email,
         'uid': userCredential.user!.uid,
       });
