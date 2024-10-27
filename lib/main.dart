@@ -7,6 +7,7 @@ import 'package:jobfinder/auth/email_verification.dart';
 // // import 'package:jobfinder/auth/register_as_jobseeker_screen.dart';
 // import 'package:jobfinder/auth/register_as_rec_screen.dart';
 import 'package:jobfinder/provider/theme_provider.dart';
+import 'package:jobfinder/screens/splash_screen.dart';
 // import 'package:jobfinder/screens/home_screen.dart';
 import 'package:jobfinder/themes/theme.dart';
 import 'package:provider/provider.dart';
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
       theme: lightTheme,
       darkTheme: darkTheme,
       themeMode: themeProvider.themeMode,
-      home: EmailVerificationScreen(),
+      home: SplashScreen(),
     );
   }
 }
