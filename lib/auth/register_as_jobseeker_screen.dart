@@ -324,33 +324,29 @@ class _RegisterAsJobseekerScreenState extends State<RegisterAsJobseekerScreen> {
                             const SnackBar(
                                 content: Text('Passwords do not match.')));
                       } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                content: Text('Register function executed.')));
+                        String resumePath = '';
+                        if (_filePath != null) {
+                          // Define a unique name for the file in storage
+                          String fileName =
+                              '${DateTime.now().millisecondsSinceEpoch}_${_filePath!.split('/').last}';
+                          final Reference storageRef = FirebaseStorage.instance
+                              .ref()
+                              .child('resumes/$fileName');
+                          await storageRef.putFile(File(_filePath!));
+                          resumePath = await storageRef
+                              .getDownloadURL(); // Get the download URL for the uploaded file
+                        }
+                        Fluttertoast.showToast(
+                            msg: 'File Uploaded. Signing You Up');
+
+                        _auth.signUpUser(
+                            email, pass, name, phone, skills, resumePath);
                       }
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                           content:
                               Text('Please fill in the required fields.')));
                     }
-
-                    String resumePath = '';
-                    if (_filePath != null) {
-                      // Define a unique name for the file in storage
-                      String fileName =
-                          '${DateTime.now().millisecondsSinceEpoch}_${_filePath!.split('/').last}';
-                      final Reference storageRef = FirebaseStorage.instance
-                          .ref()
-                          .child('resumes/$fileName');
-                      await storageRef.putFile(File(_filePath!));
-                      resumePath = await storageRef
-                          .getDownloadURL(); // Get the download URL for the uploaded file
-                    }
-                    Fluttertoast.showToast(
-                        msg: 'File Uploaded. Signing You Up');
-
-                    _auth.signUpUser(
-                        email, pass, name, phone, skills, resumePath);
                   },
                   buttonTxt: const Text(
                     'Register',

@@ -27,6 +27,7 @@ class AuthServices {
         'uid': userCredential.user!.uid,
         'skills': skills, // Store skills as a list
         'resume_url': resumePath, // Store the download URL of the resume
+        'role': 'Job Seeker'
       });
 
       Fluttertoast.showToast(msg: 'Registration successful!');
@@ -56,7 +57,9 @@ class AuthServices {
         'contact': contact,
         'address': address,
         'uid': userCredential.user!.uid,
+        'role': 'Recruiter'
       });
+      Fluttertoast.showToast(msg: 'Sign Up SuccessFull.');
     } catch (e) {
       Fluttertoast.showToast(msg: 'Error... Signing Up!');
       rethrow;
