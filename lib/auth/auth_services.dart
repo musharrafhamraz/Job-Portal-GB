@@ -7,31 +7,6 @@ class AuthServices {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   // Sign Up Method
-  // Future<void> signUpUser(
-  //     String email, String password, String name, String phone) async {
-  //   try {
-  //     UserCredential userCredential =
-  //         await _auth.createUserWithEmailAndPassword(
-  //       email: email,
-  //       password: password,
-  //     );
-
-  //     // Save additional fields in Firestore
-  //     await FirebaseFirestore.instance
-  //         .collection('users')
-  //         .doc(userCredential.user!.uid)
-  //         .set({
-  //       'name': name,
-  //       'phone': phone,
-  //       'email': email,
-  //       'uid': userCredential.user!.uid,
-  //     });
-  //   } catch (e) {
-  //     Fluttertoast.showToast(msg: 'Error... Signing Up!');
-  //     rethrow;
-  //   }
-  // }
-
   Future<void> signUpUser(String email, String password, String name,
       String phone, List<String> skills, String resumePath) async {
     try {

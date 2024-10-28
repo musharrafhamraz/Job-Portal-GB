@@ -351,7 +351,6 @@ class _RegisterAsJobseekerScreenState extends State<RegisterAsJobseekerScreen> {
 
                     _auth.signUpUser(
                         email, pass, name, phone, skills, resumePath);
-                    Fluttertoast.showToast(msg: 'Sign Up SuccessFull.');
                   },
                   buttonTxt: const Text(
                     'Register',
