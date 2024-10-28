@@ -7,8 +7,33 @@ class AuthServices {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   // Sign Up Method
-  Future<void> signUpUser(
-      String email, String password, String name, String phone) async {
+  // Future<void> signUpUser(
+  //     String email, String password, String name, String phone) async {
+  //   try {
+  //     UserCredential userCredential =
+  //         await _auth.createUserWithEmailAndPassword(
+  //       email: email,
+  //       password: password,
+  //     );
+
+  //     // Save additional fields in Firestore
+  //     await FirebaseFirestore.instance
+  //         .collection('users')
+  //         .doc(userCredential.user!.uid)
+  //         .set({
+  //       'name': name,
+  //       'phone': phone,
+  //       'email': email,
+  //       'uid': userCredential.user!.uid,
+  //     });
+  //   } catch (e) {
+  //     Fluttertoast.showToast(msg: 'Error... Signing Up!');
+  //     rethrow;
+  //   }
+  // }
+
+  Future<void> signUpUser(String email, String password, String name,
+      String phone, List<String> skills, String resumePath) async {
     try {
       UserCredential userCredential =
           await _auth.createUserWithEmailAndPassword(
@@ -22,10 +47,14 @@ class AuthServices {
           .doc(userCredential.user!.uid)
           .set({
         'name': name,
-        'age': phone,
+        'phone': phone,
         'email': email,
         'uid': userCredential.user!.uid,
+        'skills': skills, // Store skills as a list
+        'resume_url': resumePath, // Store the download URL of the resume
       });
+
+      Fluttertoast.showToast(msg: 'Registration successful!');
     } catch (e) {
       Fluttertoast.showToast(msg: 'Error... Signing Up!');
       rethrow;

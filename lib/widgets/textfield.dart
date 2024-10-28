@@ -6,6 +6,7 @@ class CustomTextField extends StatelessWidget {
   final int maxLines;
   final TextInputType? keyboardType;
   final bool obscureText;
+  final Function(String)? onSubmit;
 
   const CustomTextField({
     super.key,
@@ -14,6 +15,7 @@ class CustomTextField extends StatelessWidget {
     this.maxLines = 1,
     this.keyboardType,
     this.obscureText = false,
+    this.onSubmit,
   });
 
   @override
@@ -33,6 +35,7 @@ class CustomTextField extends StatelessWidget {
       maxLines: maxLines,
       keyboardType: keyboardType,
       obscureText: obscureText,
+      onSubmitted: onSubmit,
       style: TextStyle(color: textColor), // Set text color based on theme
       decoration: InputDecoration(
         labelText: label,

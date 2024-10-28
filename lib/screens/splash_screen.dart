@@ -1,5 +1,6 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:jobfinder/auth/login_screen.dart';
 import 'package:jobfinder/constants/image_strings.dart';
 import 'package:jobfinder/widgets/title_name_widget.dart';
 
@@ -8,6 +9,15 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Start a timer when the splash screen is displayed
+    Timer(const Duration(seconds: 3), () {
+      // Navigate to the LoginScreen after 3 seconds
+      Navigator.of(context)
+          .pushReplacement(MaterialPageRoute(builder: (context) {
+        return const LoginScreen();
+      }));
+    });
+
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),

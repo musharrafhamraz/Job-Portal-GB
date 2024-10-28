@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jobfinder/auth/options.dart';
 import 'package:jobfinder/constants/image_strings.dart';
 import 'package:jobfinder/widgets/main_button.dart';
 import 'package:jobfinder/widgets/textfield.dart';
@@ -66,7 +67,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Text('Do not have an account?'),
-                    TextButton(onPressed: () {}, child: const Text('Sign Up'))
+                    TextButton(
+                        onPressed: () {
+                          Navigator.of(context)
+                              .push(MaterialPageRoute(builder: (context) {
+                            return const SignUpOptions();
+                          }));
+                        },
+                        child: const Text('Sign Up'))
                   ],
                 )
               ],
