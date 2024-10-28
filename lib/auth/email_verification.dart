@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:jobfinder/constants/image_strings.dart';
-import 'package:jobfinder/screens/home_screen.dart';
+import 'package:jobfinder/screens/main_screen.dart';
 
 class EmailVerificationScreen extends StatefulWidget {
   const EmailVerificationScreen({super.key});
@@ -32,7 +32,7 @@ class EmailVerificationScreenState extends State<EmailVerificationScreen> {
     if (FirebaseAuth.instance.currentUser!.emailVerified) {
       Navigator.of(context)
           .pushReplacement(MaterialPageRoute(builder: (context) {
-        return const HomeScreen();
+        return const MainScreen();
       }));
     }
   }

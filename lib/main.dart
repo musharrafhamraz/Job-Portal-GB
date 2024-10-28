@@ -1,8 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:jobfinder/provider/theme_provider.dart';
-import 'package:jobfinder/screens/main_screen.dart';
-// import 'package:jobfinder/screens/splash_screen.dart';
+import 'package:jobfinder/screens/splash_screen.dart';
 import 'package:jobfinder/themes/theme.dart';
 import 'package:provider/provider.dart';
 
@@ -12,7 +11,7 @@ void main() async {
   runApp(
     ChangeNotifierProvider(
       create: (_) => ThemeProvider(),
-      child: MyApp(),
+      child: const MyApp(),
     ),
   );
 }
@@ -28,7 +27,7 @@ class MyApp extends StatelessWidget {
       theme: lightTheme,
       darkTheme: darkTheme,
       themeMode: themeProvider.themeMode,
-      home: MainScreen(),
+      home: const SplashScreen(),
     );
   }
 }

@@ -26,7 +26,7 @@ class SignUpOptions extends StatelessWidget {
             CustomButton(
               onPress: () {
                 Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) {
+                    .pushReplacement(MaterialPageRoute(builder: (context) {
                   return const RegisterAsRecScreen();
                 }));
               },
@@ -44,7 +44,7 @@ class SignUpOptions extends StatelessWidget {
                 //     .push(MaterialPageRoute(builder: (context) {
                 //   return const RegisterAsJobseekerScreen();
                 // }));
-                Navigator.of(context).push(
+                Navigator.of(context).pushReplacement(
                   PageRouteBuilder(
                     transitionDuration: const Duration(
                         milliseconds: 500), // Adjust the duration as needed
@@ -81,8 +81,8 @@ class SignUpOptions extends StatelessWidget {
                 const Text('Already have an account?'),
                 TextButton(
                     onPressed: () {
-                      Navigator.of(context)
-                          .push(MaterialPageRoute(builder: (context) {
+                      Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(builder: (context) {
                         return const LoginScreen();
                       }));
                     },
