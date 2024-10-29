@@ -12,10 +12,10 @@ class CustomOutlineButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    // final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
-    final Color? background_color =
-        isDarkMode ? Colors.blue[700] : Colors.blue[900];
+    // final Color? background_color =
+    //     isDarkMode ? Colors.blue[700] : Colors.blue[900];
     return SizedBox(
       width: double.infinity,
       child: OutlinedButton(

@@ -43,7 +43,7 @@ void showJobDetails(BuildContext context, Map<String, dynamic> job) {
         builder: (BuildContext context, StateSetter setState) {
           return Container(
             height: MediaQuery.of(context).size.height,
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.fromLTRB(16.0, 30.0, 16.0, 16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -69,6 +69,9 @@ void showJobDetails(BuildContext context, Map<String, dynamic> job) {
                 buildText(job['name'] ?? 'No Name',
                     style: const TextStyle(
                         fontSize: 30, fontWeight: FontWeight.bold)),
+                const SizedBox(
+                  height: 10,
+                ),
                 buildText(job['company'] ?? 'No Company',
                     style: const TextStyle(fontSize: 20)),
                 buildText(job['location'] ?? 'No Location',
