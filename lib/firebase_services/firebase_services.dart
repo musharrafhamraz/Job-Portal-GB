@@ -26,3 +26,23 @@ Future<void> postJobToFirestore({
     print('Error posting job: $e');
   }
 }
+
+class FirebaseServices {
+  Future<List<Map<String, dynamic>>> fetchJobs() async {
+    List<Map<String, dynamic>> jobs = [];
+
+    try {
+      QuerySnapshot snapshot = await FirebaseFirestore.instance
+          .collection('jobs') // Specify the correct collection name here
+          .get();
+
+      jobs = snapshot.docs
+          .map((doc) => doc.data() as Map<String, dynamic>)
+          .toList();
+    } catch (e) {
+      print('Error fetching jobs: $e');
+    }
+
+    return jobs;
+  }
+}
