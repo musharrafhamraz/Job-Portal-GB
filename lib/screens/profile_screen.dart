@@ -40,6 +40,7 @@ class ProfileScreen extends StatelessWidget {
           final String name = userData['name'] ?? 'N/A';
           final String email = userData['email'] ?? 'N/A';
           final String phone = userData['phone'] ?? 'N/A';
+          final String desc = userData['description'] ?? 'N/A';
           final String role = userData['role'] ?? 'N/A';
           final List<String> skills =
               List<String>.from(userData['skills'] ?? []);
@@ -94,6 +95,12 @@ class ProfileScreen extends StatelessWidget {
                   phone,
                   style: const TextStyle(fontSize: 16),
                 ),
+                const SizedBox(height: 8),
+                // Phone
+                Text(
+                  desc,
+                  style: const TextStyle(fontSize: 16),
+                ),
                 const SizedBox(height: 20),
                 // Skills
                 const Text(
@@ -108,18 +115,19 @@ class ProfileScreen extends StatelessWidget {
                   ),
                 const Spacer(),
                 // Logout Button
-                Center(
-                  child: CustomButton(
-                    onPress: () {
-                      showModalBottomSheet(
-                        context: context,
-                        builder: (context) => UpdateProfileBottomSheet(),
-                      );
-                    },
-                    buttonTxt: const Text(
-                      'Update Profile',
-                      style: TextStyle(color: Colors.white),
-                    ),
+                CustomButton(
+                  onPress: () {
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      builder: (context) => UpdateProfileBottomSheet(
+                        userId: uid,
+                      ),
+                    );
+                  },
+                  buttonTxt: const Text(
+                    'Update Profile',
+                    style: TextStyle(color: Colors.white),
                   ),
                 ),
                 const SizedBox(
