@@ -7,7 +7,7 @@ import 'package:jobfinder/widgets/textfield.dart';
 class UpdateProfileBottomSheet extends StatefulWidget {
   final String userId; // Pass the userId to fetch and update data in Firebase
 
-  UpdateProfileBottomSheet({required this.userId});
+  const UpdateProfileBottomSheet({super.key, required this.userId});
 
   @override
   _UpdateProfileBottomSheetState createState() =>
