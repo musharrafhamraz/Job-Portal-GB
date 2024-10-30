@@ -92,7 +92,7 @@ class _SavedJobsTabState extends State<SavedJobsTab> {
                   itemBuilder: (context, index) {
                     final job = savedJobsList![index];
                     final timestamp = (job['timestamp'] as Timestamp).toDate();
-                    final isJobSaved = saveJobProvider.isFavorite(timestamp);
+                    final isJobSaved = saveJobProvider.isSaved(timestamp);
 
                     return Card(
                       margin: const EdgeInsets.fromLTRB(16.0, 10.0, 16.0, 16.0),

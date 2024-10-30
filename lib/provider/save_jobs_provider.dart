@@ -39,7 +39,7 @@ class SaveJobsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool isFavorite(DateTime jobTimestamp) {
+  bool isSaved(DateTime jobTimestamp) {
     return savedJobs.contains(jobTimestamp);
   }
 }

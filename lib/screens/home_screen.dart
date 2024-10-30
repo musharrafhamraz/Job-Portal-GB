@@ -49,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Job Listings'),
+        title: const Text('GBHires'),
       ),
       body: Column(
         children: [
@@ -78,6 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ),
+          const SizedBox(height: 6.0),
           if (isLoading)
             const Expanded(
               child: Center(child: CircularProgressIndicator()),
@@ -94,7 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemBuilder: (context, index) {
                   final job = jobs![index];
                   final timestamp = (job['timestamp'] as Timestamp).toDate();
-                  final isJobSaved = saveJobProvider.isFavorite(timestamp);
+                  final isJobSaved = saveJobProvider.isSaved(timestamp);
 
                   return Card(
                     margin: const EdgeInsets.fromLTRB(16.0, 10.0, 16.0, 16.0),
