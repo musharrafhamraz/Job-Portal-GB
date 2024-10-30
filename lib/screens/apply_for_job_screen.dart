@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
@@ -6,7 +7,8 @@ import 'package:jobfinder/firebase_services/firebase_services.dart';
 import 'package:jobfinder/widgets/main_button.dart';
 
 class ApplyForJobScreen extends StatefulWidget {
-  const ApplyForJobScreen({super.key});
+  final String jobId;
+  const ApplyForJobScreen({super.key, required this.jobId});
 
   @override
   State<ApplyForJobScreen> createState() => _ApplyForJobScreenState();
@@ -16,9 +18,9 @@ class _ApplyForJobScreenState extends State<ApplyForJobScreen> {
   final TextEditingController coverLetterController = TextEditingController();
   final TextEditingController messageController = TextEditingController();
   bool isTimeFeasible = false;
-  String? selectedResume; // URL of the existing resume
+  String? selectedResume;
   DateTime? availableDate;
-  bool isUsingSignupResume = false; // Checkbox state
+  bool isUsingSignupResume = false;
   bool isUploading = false;
   final FirebaseServices firebaseServices = FirebaseServices();
 
@@ -72,16 +74,24 @@ class _ApplyForJobScreenState extends State<ApplyForJobScreen> {
     }
 
     // Submit form data to Firebase or backend as required.
-    final applicationData = {
-      'coverLetter': coverLetterController.text,
-      'resumeUrl': selectedResume,
-      'isTimeFeasible': isTimeFeasible,
-      'availableDate': availableDate?.toIso8601String(),
-      'userId': FirebaseAuth.instance.currentUser!.uid,
-    };
+    // final applicationData = {
+    //   'coverLetter': coverLetterController.text,
+    //   'resumeUrl': selectedResume,
+    //   'isTimeFeasible': isTimeFeasible,
+    //   'availableDate': availableDate?.toIso8601String(),
+    //   'candidateUID': FirebaseAuth.instance.currentUser!.uid,
+    // };
+
+    firebaseServices.applyForJob(
+      availableDate: availableDate,
+      coverLetter: coverLetterController.text,
+      resumeUrl: selectedResume!,
+      isTimeFeasible: isTimeFeasible,
+      jobId: widget.jobId,
+    );
 
     // Example: Print or send `applicationData`
-    print(applicationData);
+    // print(applicationData);
 
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Application submitted successfully.')),

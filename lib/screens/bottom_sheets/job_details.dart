@@ -156,7 +156,7 @@ void showJobDetails(BuildContext context, Map<String, dynamic> job) {
                         onPress: () {
                           Navigator.of(context)
                               .push(MaterialPageRoute(builder: (context) {
-                            return ApplyForJobScreen();
+                            return ApplyForJobScreen(jobId: job['jobId']);
                           }));
                         },
                         buttonTxt: const Text(

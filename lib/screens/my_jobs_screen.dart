@@ -22,7 +22,7 @@ class MyJobsScreen extends StatelessWidget {
                 builder: (context, saveJobProvider, child) {
                   int savedJobCount = saveJobProvider.savedJobItem.length;
                   return Tab(
-                    text: 'Saved Jobs (${savedJobCount})',
+                    text: 'Saved Jobs ($savedJobCount)',
                   );
                 },
               ),

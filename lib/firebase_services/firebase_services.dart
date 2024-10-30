@@ -12,8 +12,8 @@ Future<void> postJobToFirestore({
     // Get a reference to the Firestore collection
     CollectionReference jobs = FirebaseFirestore.instance.collection('jobs');
 
-    // Add the job data to Firestore
-    await jobs.add({
+    // Add the job data to Firestore and get the document reference
+    DocumentReference jobRef = await jobs.add({
       'name': name,
       'location': location,
       'jobType': jobType,
@@ -22,7 +22,12 @@ Future<void> postJobToFirestore({
       'timestamp': FieldValue.serverTimestamp(), // Optional: add timestamp
     });
 
-    print('Job posted successfully!');
+    // Create an empty 'applicants' sub-collection within the job document
+    await jobRef.collection('applicants').add({
+      'init': true, // A dummy field to initialize the sub-collection
+    });
+
+    print('Job posted successfully with applicants sub-collection!');
   } catch (e) {
     print('Error posting job: $e');
   }
@@ -77,6 +82,49 @@ class FirebaseServices {
     } catch (e) {
       print("Error fetching resume URL: $e");
       return null;
+    }
+  }
+
+  // Apply for the job
+  Future<void> applyForJob({
+    required String jobId, // The job document ID for which the user is applying
+    required String coverLetter,
+    required String resumeUrl,
+    required bool isTimeFeasible,
+    required DateTime? availableDate,
+  }) async {
+    try {
+      // Reference to the Firestore instance
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+      // Get the current user's UID
+      String userId = FirebaseAuth.instance.currentUser!.uid;
+
+      // Prepare application data
+      final applicationData = {
+        'userId': userId,
+        'coverLetter': coverLetter,
+        'resumeUrl': resumeUrl,
+        'isTimeFeasible': isTimeFeasible,
+        'availableDate': availableDate?.toIso8601String(),
+        'applicationDate': FieldValue.serverTimestamp(),
+        'status': 'pending',
+      };
+
+      // Reference to the specific job's 'applicants' sub-collection
+      DocumentReference jobRef = firestore.collection('jobs').doc(jobId);
+      await jobRef.collection('applicants').add(applicationData);
+
+      // Add a reference to the applied job in the job seeker's document within 'users' collection
+      DocumentReference userRef = firestore.collection('users').doc(userId);
+      await userRef.update({
+        'appliedJobs': FieldValue.arrayUnion(
+            [jobId]) // Add jobId to 'appliedJobs' array in user's document
+      });
+
+      print('Application submitted successfully!');
+    } catch (e) {
+      print('Error submitting application: $e');
     }
   }
 }
