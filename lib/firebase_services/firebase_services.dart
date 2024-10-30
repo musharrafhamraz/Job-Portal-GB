@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 Future<void> postJobToFirestore({
   required String name,
@@ -44,5 +45,38 @@ class FirebaseServices {
     }
 
     return jobs;
+  }
+
+  // fetch the resume url form firebase
+  Future<String?> fetchUserResume() async {
+    try {
+      // Get the current user's UID
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user == null) {
+        // User is not logged in
+        return null;
+      }
+
+      String uid = user.uid;
+
+      // Fetch the user document from Firestore
+      DocumentSnapshot userDoc =
+          await FirebaseFirestore.instance.collection('users').doc(uid).get();
+
+      if (userDoc.exists) {
+        // Extract the resume URL from the user document
+        Map<String, dynamic>? userData = userDoc.data()
+            as Map<String, dynamic>?; // Cast to Map<String, dynamic>
+        String? resumeUrl = userData?['resume_url']; // Access the resume_url
+        print(resumeUrl);
+        return resumeUrl;
+      } else {
+        // Document does not exist
+        return null;
+      }
+    } catch (e) {
+      print("Error fetching resume URL: $e");
+      return null;
+    }
   }
 }

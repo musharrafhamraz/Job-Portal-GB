@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:jobfinder/screens/apply_for_job_screen.dart';
 import 'package:jobfinder/utility/time_ago_function.dart';
 import 'package:jobfinder/widgets/main_button.dart';
 import 'package:jobfinder/widgets/outline_button.dart';
@@ -152,7 +153,12 @@ void showJobDetails(BuildContext context, Map<String, dynamic> job) {
                 Column(
                   children: [
                     CustomButton(
-                        onPress: () {},
+                        onPress: () {
+                          Navigator.of(context)
+                              .push(MaterialPageRoute(builder: (context) {
+                            return ApplyForJobScreen();
+                          }));
+                        },
                         buttonTxt: const Text(
                           'Apply Now',
                           style: TextStyle(color: Colors.white),
