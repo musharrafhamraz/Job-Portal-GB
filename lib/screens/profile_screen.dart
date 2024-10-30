@@ -1,6 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:jobfinder/auth/auth_services.dart';
+import 'package:jobfinder/auth/login_screen.dart';
+import 'package:jobfinder/screens/bottom_sheets/update_profile_sheet.dart';
 import 'package:jobfinder/widgets/main_button.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -10,6 +13,7 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final String uid = FirebaseAuth
         .instance.currentUser!.uid; // Replace with dynamic UID if needed
+    final AuthServices authServices = AuthServices();
 
     return Scaffold(
       appBar: AppBar(
@@ -107,7 +111,10 @@ class ProfileScreen extends StatelessWidget {
                 Center(
                   child: CustomButton(
                     onPress: () {
-                      // Handle logout functionality
+                      showModalBottomSheet(
+                        context: context,
+                        builder: (context) => UpdateProfileBottomSheet(),
+                      );
                     },
                     buttonTxt: const Text(
                       'Update Profile',
@@ -121,7 +128,11 @@ class ProfileScreen extends StatelessWidget {
                 Center(
                   child: CustomButton(
                     onPress: () {
-                      // Handle logout functionality
+                      authServices.logoutUser();
+                      Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(builder: (context) {
+                        return LoginScreen();
+                      }));
                     },
                     buttonTxt: const Text(
                       'Logout',
