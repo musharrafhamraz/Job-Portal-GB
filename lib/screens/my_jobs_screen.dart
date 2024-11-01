@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:jobfinder/screens/applied_jobs.dart';
 import 'package:provider/provider.dart';
 import 'package:jobfinder/provider/save_jobs_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,6 +13,8 @@ class MyJobsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final FirebaseServices firebaseServices = FirebaseServices();
+    final String userId = FirebaseAuth.instance.currentUser!.uid;
     return DefaultTabController(
       length: 3, // Three tabs: Saved, Applied, Archived
       child: Scaffold(
@@ -26,7 +30,15 @@ class MyJobsScreen extends StatelessWidget {
                   );
                 },
               ),
-              const Tab(text: 'Applied Jobs'),
+              FutureBuilder<int>(
+                future: firebaseServices.getAppliedJobsCount(userId),
+                builder: (context, snapshot) {
+                  int appliedJobCount = snapshot.data ?? 0;
+                  return Tab(
+                    text: 'Applied Jobs ($appliedJobCount)',
+                  );
+                },
+              ),
               const Tab(text: 'Archived'),
             ],
           ),
@@ -54,6 +66,7 @@ class _SavedJobsTabState extends State<SavedJobsTab> {
   final FirebaseServices firebaseServices = FirebaseServices();
   final Functions functions = Functions();
   List<Map<String, dynamic>>? savedJobsList;
+  final String uid = FirebaseAuth.instance.currentUser!.uid;
 
   @override
   void initState() {
@@ -177,16 +190,16 @@ class _SavedJobsTabState extends State<SavedJobsTab> {
   }
 }
 
-class AppliedJobsTab extends StatelessWidget {
-  const AppliedJobsTab({super.key});
+// class AppliedJobsTab extends StatelessWidget {
+//   const AppliedJobsTab({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text('No Applied Jobs yet'),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return const Center(
+//       child: Text('No Applied Jobs yet'),
+//     );
+//   }
+// }
 
 class ArchivedJobsTab extends StatelessWidget {
   const ArchivedJobsTab({super.key});

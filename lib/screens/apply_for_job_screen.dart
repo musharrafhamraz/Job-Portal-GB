@@ -1,5 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -73,15 +73,6 @@ class _ApplyForJobScreenState extends State<ApplyForJobScreen> {
       return;
     }
 
-    // Submit form data to Firebase or backend as required.
-    // final applicationData = {
-    //   'coverLetter': coverLetterController.text,
-    //   'resumeUrl': selectedResume,
-    //   'isTimeFeasible': isTimeFeasible,
-    //   'availableDate': availableDate?.toIso8601String(),
-    //   'candidateUID': FirebaseAuth.instance.currentUser!.uid,
-    // };
-
     firebaseServices.applyForJob(
       availableDate: availableDate,
       coverLetter: coverLetterController.text,
@@ -89,9 +80,6 @@ class _ApplyForJobScreenState extends State<ApplyForJobScreen> {
       isTimeFeasible: isTimeFeasible,
       jobId: widget.jobId,
     );
-
-    // Example: Print or send `applicationData`
-    // print(applicationData);
 
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Application submitted successfully.')),

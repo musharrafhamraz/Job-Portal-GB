@@ -34,6 +34,7 @@ Future<void> postJobToFirestore({
 }
 
 class FirebaseServices {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   Future<List<Map<String, dynamic>>> fetchJobs() async {
     List<Map<String, dynamic>> jobs = [];
 
@@ -126,5 +127,49 @@ class FirebaseServices {
     } catch (e) {
       print('Error submitting application: $e');
     }
+  }
+
+  Future<List<Map<String, dynamic>>> fetchAppliedJobs(String userId) async {
+    List<Map<String, dynamic>> appliedJobsList = [];
+    try {
+      final querySnapshot = await _firestore.collection('jobs').get();
+
+      for (var jobDoc in querySnapshot.docs) {
+        final applicantsSnapshot = await jobDoc.reference
+            .collection('applicants')
+            .where('userId', isEqualTo: userId)
+            .get();
+
+        for (var applicantDoc in applicantsSnapshot.docs) {
+          final jobData = jobDoc.data();
+          jobData['applicationDate'] =
+              (applicantDoc['applicationDate'] as Timestamp).toDate();
+          jobData['status'] = applicantDoc['status'];
+          appliedJobsList.add(jobData);
+        }
+      }
+    } catch (e) {
+      // Handle any errors here
+    }
+    return appliedJobsList;
+  }
+
+  Future<int> getAppliedJobsCount(String userId) async {
+    int appliedJobsCount = 0;
+    try {
+      final querySnapshot = await _firestore.collection('jobs').get();
+
+      for (var jobDoc in querySnapshot.docs) {
+        final applicantsSnapshot = await jobDoc.reference
+            .collection('applicants')
+            .where('userId', isEqualTo: userId)
+            .get();
+
+        appliedJobsCount += applicantsSnapshot.docs.length;
+      }
+    } catch (e) {
+      // Handle any errors here
+    }
+    return appliedJobsCount;
   }
 }

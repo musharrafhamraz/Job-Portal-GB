@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:jobfinder/firebase_services/firebase_services.dart';
 import 'package:jobfinder/provider/save_jobs_provider.dart';
@@ -18,6 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final Functions functions = Functions();
   final FirebaseServices firebaseServices = FirebaseServices();
   final TextEditingController citySearchController = TextEditingController();
+  final String uid = FirebaseAuth.instance.currentUser!.uid;
 
   List<Map<String, dynamic>>? jobs; // Cache for fetched jobs
   bool isLoading = true; // Loading state to manage job fetching
