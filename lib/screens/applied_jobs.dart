@@ -42,7 +42,7 @@ class _AppliedJobsTabState extends State<AppliedJobsTab> {
                   itemCount: appliedJobsList!.length,
                   itemBuilder: (context, index) {
                     final job = appliedJobsList![index];
-                    final applicationDate = job['applicationDate'] as DateTime?;
+                    // final applicationDate = job['applicationDate'] as DateTime?;
                     final status = job['status'] ?? 'No status';
 
                     return Card(

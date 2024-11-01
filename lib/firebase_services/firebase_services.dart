@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:jobfinder/local_storage/job_data_prefernces.dart';
 
 Future<void> postJobToFirestore({
   required String name,
@@ -124,6 +125,7 @@ class FirebaseServices {
       });
 
       print('Application submitted successfully!');
+      JobApplicationPreferences.saveAppliedJob(jobId);
     } catch (e) {
       print('Error submitting application: $e');
     }

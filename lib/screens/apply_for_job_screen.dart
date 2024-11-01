@@ -8,7 +8,8 @@ import 'package:jobfinder/widgets/main_button.dart';
 
 class ApplyForJobScreen extends StatefulWidget {
   final String jobId;
-  const ApplyForJobScreen({super.key, required this.jobId});
+  bool hasApplied;
+  ApplyForJobScreen({super.key, required this.jobId, required this.hasApplied});
 
   @override
   State<ApplyForJobScreen> createState() => _ApplyForJobScreenState();
@@ -84,6 +85,9 @@ class _ApplyForJobScreenState extends State<ApplyForJobScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Application submitted successfully.')),
     );
+    setState(() {
+      widget.hasApplied = true;
+    });
 
     Navigator.pop(context);
   }
