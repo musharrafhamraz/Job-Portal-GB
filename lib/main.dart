@@ -2,7 +2,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:jobfinder/provider/save_jobs_provider.dart';
 import 'package:jobfinder/provider/theme_provider.dart';
-import 'package:jobfinder/screens/recruitor/home_screen.dart';
 import 'package:jobfinder/screens/splash_screen.dart';
 import 'package:jobfinder/themes/theme.dart';
 import 'package:provider/provider.dart';

@@ -9,10 +9,14 @@ class MessageScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Chat'),
       ),
-      body: const Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [Text('Feature Coming soon')],
+      body: const SizedBox(
+        height: double.infinity,
+        width: double.infinity,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [Text('Feature Coming soon')],
+        ),
       ),
     );
   }

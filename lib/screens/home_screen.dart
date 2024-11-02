@@ -21,13 +21,16 @@ class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController citySearchController = TextEditingController();
   final String uid = FirebaseAuth.instance.currentUser!.uid;
 
-  List<Map<String, dynamic>>? jobs; // Cache for fetched jobs
-  bool isLoading = true; // Loading state to manage job fetching
+  List<Map<String, dynamic>>? jobs;
+  List<Map<String, dynamic>>? filteredJobs;
+  bool isLoading = true;
+  String searchQuery = '';
+  String locationQuery = '';
 
   @override
   void initState() {
     super.initState();
-    _fetchJobs(); // Fetch jobs only once in initState
+    _fetchJobs();
   }
 
   Future<void> _fetchJobs() async {
@@ -35,14 +38,36 @@ class _HomeScreenState extends State<HomeScreen> {
       final fetchedJobs = await firebaseServices.fetchJobs();
       setState(() {
         jobs = fetchedJobs;
+        filteredJobs = List.from(jobs!); // Initialize filteredJobs with jobs
         isLoading = false;
       });
     } catch (e) {
       setState(() {
         isLoading = false;
       });
-      // Handle error (e.g., show a snackbar or error message)
     }
+  }
+
+  void _filterJobs() {
+    setState(() {
+      filteredJobs = jobs?.where((job) {
+        final jobName = job['name']?.toLowerCase() ?? '';
+        final jobLocation = job['location']?.toLowerCase() ?? '';
+
+        final matchesSearch = jobName.contains(searchQuery.toLowerCase());
+        final matchesLocation =
+            jobLocation.contains(locationQuery.toLowerCase());
+
+        if (searchQuery.isNotEmpty && locationQuery.isEmpty) {
+          return matchesSearch;
+        } else if (locationQuery.isNotEmpty && searchQuery.isEmpty) {
+          return matchesLocation;
+        } else if (searchQuery.isNotEmpty && locationQuery.isNotEmpty) {
+          return matchesSearch && matchesLocation;
+        }
+        return true;
+      }).toList();
+    });
   }
 
   @override
@@ -55,9 +80,18 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Column(
         children: [
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.0),
-            child: SearchLocationTextField(),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: SearchLocationTextField(
+              onSearchChanged: (query) {
+                searchQuery = query;
+                _filterJobs();
+              },
+              onLocationChanged: (query) {
+                locationQuery = query;
+                _filterJobs();
+              },
+            ),
           ),
           const Padding(
             padding: EdgeInsets.only(left: 16.0, top: 16.0),
@@ -85,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
             const Expanded(
               child: Center(child: CircularProgressIndicator()),
             )
-          else if (jobs == null || jobs!.isEmpty)
+          else if (filteredJobs == null || filteredJobs!.isEmpty)
             const Expanded(
               child: Center(child: Text('No jobs found')),
             )
@@ -93,9 +127,9 @@ class _HomeScreenState extends State<HomeScreen> {
             Expanded(
               flex: 7,
               child: ListView.builder(
-                itemCount: jobs!.length,
+                itemCount: filteredJobs!.length,
                 itemBuilder: (context, index) {
-                  final job = jobs![index];
+                  final job = filteredJobs![index];
                   final timestamp = (job['timestamp'] as Timestamp).toDate();
                   final isJobSaved = saveJobProvider.isSaved(timestamp);
 
@@ -176,7 +210,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             await firebaseServices.reportJob(
                                                 job['jobId'], uid);
                                             setState(
-                                                () {}); // Refresh the button color after reporting
+                                                () {}); // Refresh button color
                                           },
                                   );
                                 },

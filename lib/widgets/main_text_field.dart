@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 
 class SearchLocationTextField extends StatelessWidget {
-  const SearchLocationTextField({super.key});
+  final Function(String) onSearchChanged;
+  final Function(String) onLocationChanged;
+
+  const SearchLocationTextField({
+    super.key,
+    required this.onSearchChanged,
+    required this.onLocationChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 3),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(8),
@@ -21,14 +28,20 @@ class SearchLocationTextField extends StatelessWidget {
       child: Row(
         children: [
           // Search Field
-          const Expanded(
+          Expanded(
             child: Row(
               children: [
-                Icon(Icons.search, color: Colors.grey),
-                SizedBox(width: 8),
-                Text(
-                  'Search',
-                  style: TextStyle(color: Colors.grey),
+                const Icon(Icons.search, color: Colors.grey),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: TextField(
+                    decoration: const InputDecoration(
+                      hintText: 'Search',
+                      hintStyle: TextStyle(color: Colors.grey, fontSize: 13),
+                      border: InputBorder.none,
+                    ),
+                    onChanged: onSearchChanged, // Trigger onSearchChanged
+                  ),
                 ),
               ],
             ),
@@ -43,14 +56,20 @@ class SearchLocationTextField extends StatelessWidget {
           const SizedBox(width: 8),
 
           // Location Field
-          const Expanded(
+          Expanded(
             child: Row(
               children: [
-                Icon(Icons.location_on, color: Colors.grey),
-                SizedBox(width: 8),
-                Text(
-                  'City, state, zip code',
-                  style: TextStyle(color: Colors.grey),
+                const Icon(Icons.location_on, color: Colors.grey),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: TextField(
+                    decoration: const InputDecoration(
+                      hintText: 'City, state, zip code',
+                      hintStyle: TextStyle(color: Colors.grey, fontSize: 13),
+                      border: InputBorder.none,
+                    ),
+                    onChanged: onLocationChanged, // Trigger onLocationChanged
+                  ),
                 ),
               ],
             ),
