@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:jobfinder/firebase_services/firebase_services.dart';
 import 'package:jobfinder/local_storage/job_data_prefernces.dart';
 import 'package:jobfinder/screens/apply_for_job_screen.dart';
 import 'package:jobfinder/utility/time_ago_function.dart';
@@ -11,6 +13,8 @@ void showJobDetails(BuildContext context, Map<String, dynamic> job) {
   bool showMore = false;
   var functions = Functions();
   bool hasApplied = false;
+  final FirebaseServices firebaseServices = FirebaseServices();
+  final String uid = FirebaseAuth.instance.currentUser!.uid;
 
   JobApplicationPreferences.isJobApplied(job['jobId']).then((value) {
     hasApplied = value;
@@ -191,16 +195,35 @@ void showJobDetails(BuildContext context, Map<String, dynamic> job) {
                     ),
                     const SizedBox(height: 10),
                     CustomOutlineButton(
-                      onPress: () {},
-                      buttonTxt: const Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.report_gmailerrorred_outlined,
-                              color: Colors.black),
-                          SizedBox(width: 3),
-                          Text('Report Job',
-                              style: TextStyle(color: Colors.black)),
-                        ],
+                      onPress: () async {
+                        if (!await firebaseServices.isJobReported(
+                            job['jobId'], uid)) {
+                          await firebaseServices.reportJob(job['jobId'], uid);
+                          Navigator.pop(context); // Optionally close modal
+                        }
+                      },
+                      buttonTxt: FutureBuilder<bool>(
+                        future:
+                            firebaseServices.isJobReported(job['jobId'], uid),
+                        builder: (context, snapshot) {
+                          bool isReported = snapshot.data ?? false;
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.report_gmailerrorred_outlined,
+                                color: isReported ? Colors.red : Colors.black,
+                              ),
+                              const SizedBox(width: 3),
+                              Text(
+                                isReported ? 'Reported' : 'Report Job',
+                                style: TextStyle(
+                                    color:
+                                        isReported ? Colors.red : Colors.black),
+                              ),
+                            ],
+                          );
+                        },
                       ),
                     ),
                   ],

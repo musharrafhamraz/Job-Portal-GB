@@ -158,13 +158,27 @@ class _HomeScreenState extends State<HomeScreen> {
                                   saveJobProvider.toggleFavorites(timestamp);
                                 },
                               ),
-                              IconButton(
-                                icon: const Icon(
-                                  Icons.report_gmailerrorred_sharp,
-                                  size: 35,
-                                ),
-                                onPressed: () {
-                                  // Add functionality to report the job
+                              FutureBuilder<bool>(
+                                future: firebaseServices.isJobReported(
+                                    job['jobId'], uid),
+                                builder: (context, snapshot) {
+                                  bool isReported = snapshot.data ?? false;
+                                  return IconButton(
+                                    icon: Icon(
+                                      Icons.report_gmailerrorred_sharp,
+                                      size: 35,
+                                      color:
+                                          isReported ? Colors.red : Colors.grey,
+                                    ),
+                                    onPressed: isReported
+                                        ? null
+                                        : () async {
+                                            await firebaseServices.reportJob(
+                                                job['jobId'], uid);
+                                            setState(
+                                                () {}); // Refresh the button color after reporting
+                                          },
+                                  );
                                 },
                               ),
                             ],

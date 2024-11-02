@@ -174,4 +174,28 @@ class FirebaseServices {
     }
     return appliedJobsCount;
   }
+
+  Future<void> reportJob(String jobId, String userId) async {
+    DocumentReference jobRef = _firestore.collection('jobs').doc(jobId);
+
+    await _firestore.runTransaction((transaction) async {
+      DocumentSnapshot jobSnapshot = await transaction.get(jobRef);
+
+      if (jobSnapshot.exists) {
+        List<dynamic> reportedBy = jobSnapshot['reportedBy'] ?? [];
+
+        if (!reportedBy.contains(userId)) {
+          reportedBy.add(userId);
+          transaction.update(jobRef, {'reportedBy': reportedBy});
+        }
+      }
+    });
+  }
+
+  Future<bool> isJobReported(String jobId, String userId) async {
+    DocumentSnapshot jobSnapshot =
+        await _firestore.collection('jobs').doc(jobId).get();
+    List<dynamic> reportedBy = jobSnapshot['reportedBy'] ?? [];
+    return reportedBy.contains(userId);
+  }
 }
