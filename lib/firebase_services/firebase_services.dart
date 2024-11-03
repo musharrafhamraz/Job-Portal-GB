@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:jobfinder/local_storage/job_data_prefernces.dart';
 
 Future<void> postJobToFirestore({
+  required String company,
   required String name,
   required String location,
   required String jobType,
@@ -15,12 +16,19 @@ Future<void> postJobToFirestore({
 
     // Add the job data to Firestore and get the document reference
     DocumentReference jobRef = await jobs.add({
+      'company': company,
       'name': name,
       'location': location,
       'jobType': jobType,
       'experience': experience,
       'requirements': requirements,
-      'timestamp': FieldValue.serverTimestamp(), // Optional: add timestamp
+      'timestamp': FieldValue.serverTimestamp(),
+    });
+
+    // Get the document ID and update the job document with this ID as jobId
+    String jobId = jobRef.id;
+    await jobRef.update({
+      'jobId': jobId,
     });
 
     // Create an empty 'applicants' sub-collection within the job document
@@ -28,7 +36,7 @@ Future<void> postJobToFirestore({
       'init': true, // A dummy field to initialize the sub-collection
     });
 
-    print('Job posted successfully with applicants sub-collection!');
+    print('Job posted successfully with jobId and applicants sub-collection!');
   } catch (e) {
     print('Error posting job: $e');
   }

@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:jobfinder/auth/login_screen.dart';
 import 'package:jobfinder/constants/image_strings.dart';
 import 'package:jobfinder/screens/main_screen.dart';
-import 'package:jobfinder/screens/recruitor/home_screen.dart';
+// import 'package:jobfinder/screens/recruitor/home_screen.dart';
+import 'package:jobfinder/screens/recruitor/main_screen.dart';
 import 'package:jobfinder/widgets/title_name_widget.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -28,7 +29,7 @@ class SplashScreen extends StatelessWidget {
           // Email exists in companies collection, navigate to recruiter screen
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
-              builder: (context) => const PostJobScreen(),
+              builder: (context) => const RecMainScreen(),
             ),
           );
         } else {

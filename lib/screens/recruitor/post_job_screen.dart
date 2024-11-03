@@ -4,7 +4,8 @@ import 'package:jobfinder/widgets/main_button.dart';
 import 'package:jobfinder/widgets/textfield.dart';
 
 class PostJobScreen extends StatefulWidget {
-  const PostJobScreen({super.key});
+  final String companyName;
+  const PostJobScreen({super.key, required this.companyName});
 
   @override
   State<PostJobScreen> createState() => _PostJobScreenState();
@@ -23,6 +24,7 @@ class _PostJobScreenState extends State<PostJobScreen> {
   void postJob() {
     if (_formKey.currentState?.validate() ?? false) {
       postJobToFirestore(
+        company: widget.companyName,
         name: nameController.text,
         location: locationController.text,
         jobType: jobType,
