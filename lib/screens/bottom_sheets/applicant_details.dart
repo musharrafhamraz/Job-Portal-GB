@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:jobfinder/widgets/main_button.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 void showApplicantDetails(
     BuildContext context, Map<String, dynamic> applicant) async {
@@ -25,53 +25,97 @@ void showApplicantDetails(
   final phone = userDetails['phone'];
   final email = userDetails['email'];
 
-  Future<void> _openResume(Uri url) async {
-    if (await canLaunchUrl(url)) {
-      await launchUrl(url, mode: LaunchMode.externalApplication);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
-
   showModalBottomSheet(
     context: context,
-    builder: (BuildContext context) {
-      return SizedBox(
-        height: MediaQuery.of(context).size.height * 0.9,
-        width: double.infinity,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              IconButton(onPressed: () {}, icon: const Icon(Icons.close)),
-              Text(
-                '$applicantName',
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
+    isScrollControlled: true,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+    ),
+    builder: (context) {
+      return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+        return SingleChildScrollView(
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height,
+            width: double.infinity,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      icon: const Icon(Icons.close)),
+                  Text(
+                    '$applicantName',
+                    style: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    '$email',
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w300,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    '$phone',
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w300,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    '$skills',
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w300,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Applied on: ${formatDate(applicationDate)}',
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w300,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Cover Letter: $coverLetter',
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w300,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  // Add container to display PDF
+                  SizedBox(
+                    height: 500, // You can adjust the height as needed
+                    child: SfPdfViewer.network(resumeUrl.toString()),
+                  ),
+
+                  const SizedBox(height: 16),
+                  CustomButton(
+                    onPress: () {},
+                    buttonTxt: const Text(
+                      'Select Candidate',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ],
               ),
-              Text('Email: $email'),
-              const SizedBox(height: 8),
-              Text('Phone: $phone'),
-              const SizedBox(height: 8),
-              Text('Skills: $skills'),
-              const SizedBox(height: 8),
-              Text('Applied on: ${formatDate(applicationDate)}'),
-              const SizedBox(height: 8),
-              Text('Cover Letter: $coverLetter'),
-              const SizedBox(height: 8),
-              const SizedBox(height: 16),
-              CustomButton(
-                onPress: () => _openResume(resumeUrl),
-                buttonTxt: const Text('View Resume'),
-              ),
-            ],
+            ),
           ),
-        ),
-      );
+        );
+      });
     },
   );
 }
