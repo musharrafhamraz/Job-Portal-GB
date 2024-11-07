@@ -95,7 +95,6 @@ class FirebaseServices {
     }
   }
 
-  // Apply for the job
   Future<void> applyForJob({
     required String jobId, // The job document ID for which the user is applying
     required String coverLetter,
@@ -110,9 +109,16 @@ class FirebaseServices {
       // Get the current user's UID
       String userId = FirebaseAuth.instance.currentUser!.uid;
 
+      // Fetch the user's name from Firestore
+      DocumentSnapshot userDoc =
+          await firestore.collection('users').doc(userId).get();
+      String userName = userDoc['name'] ??
+          'Unknown'; // Fallback in case 'name' field is missing
+
       // Prepare application data
       final applicationData = {
         'userId': userId,
+        'name': userName,
         'coverLetter': coverLetter,
         'resumeUrl': resumeUrl,
         'isTimeFeasible': isTimeFeasible,

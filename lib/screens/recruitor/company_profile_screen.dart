@@ -120,7 +120,7 @@ class CompanyProfileScreen extends StatelessWidget {
                       authServices.logoutUser();
                       Navigator.of(context).pushReplacement(
                           MaterialPageRoute(builder: (context) {
-                        return LoginScreen();
+                        return const LoginScreen();
                       }));
                     },
                     buttonTxt: const Text(

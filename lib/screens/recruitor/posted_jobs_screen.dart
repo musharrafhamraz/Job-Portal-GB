@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:jobfinder/screens/bottom_sheets/job_details_recruiter.dart';
+import 'package:jobfinder/screens/recruitor/job_seekers_list_screen.dart';
 import 'package:jobfinder/screens/recruitor/post_job_screen.dart';
 import 'package:jobfinder/utility/time_ago_function.dart';
 
@@ -39,6 +41,32 @@ class _AllJobsPostedScreenState extends State<AllJobsPostedScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('GBHires'),
+        actions: [
+          PopupMenuButton(itemBuilder: (context) {
+            return [
+              PopupMenuItem(
+                onTap: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) {
+                    return PostJobScreen(
+                      companyName: widget.companyName,
+                    );
+                  }));
+                },
+                child: const Text('Post a Job'),
+              ),
+              PopupMenuItem(
+                onTap: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) {
+                    return const JobSeekersListScreen();
+                  }));
+                },
+                child: const Text('Go to'),
+              ),
+            ];
+          })
+        ],
       ),
       body: FutureBuilder<List<Map<String, dynamic>>>(
         future: jobs,
@@ -55,64 +83,67 @@ class _AllJobsPostedScreenState extends State<AllJobsPostedScreen> {
               itemCount: jobsList.length,
               itemBuilder: (context, index) {
                 final job = jobsList[index];
-                return Card(
-                  margin: const EdgeInsets.fromLTRB(16.0, 10.0, 16.0, 16.0),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                // Handle job title tap event
-                              },
-                              child: Text(
-                                job['name'] ?? 'No Name',
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
+                return GestureDetector(
+                  onTap: () => showJobDetailsRec(context, job),
+                  child: Card(
+                    margin: const EdgeInsets.fromLTRB(16.0, 10.0, 16.0, 16.0),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  // Handle job title tap event
+                                },
+                                child: Text(
+                                  job['name'] ?? 'No Name',
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              'You Posted: ${job['timestamp'] != null ? functions.timeAgo(job['timestamp'] as Timestamp) : 'Unknown time'}',
-                              style: TextStyle(color: Colors.grey[600]),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 12),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            IconButton(
-                              icon: const Icon(
-                                Icons.edit,
-                                size: 28,
-                                color: Colors.blue,
+                              const SizedBox(height: 4),
+                              Text(
+                                'You Posted: ${job['timestamp'] != null ? functions.timeAgo(job['timestamp'] as Timestamp) : 'Unknown time'}',
+                                style: TextStyle(color: Colors.grey[600]),
                               ),
-                              onPressed: () {
-                                // Handle edit action
-                              },
-                            ),
-                            IconButton(
-                              icon: const Icon(
-                                Icons.delete,
-                                size: 28,
-                                color: Colors.red,
+                            ],
+                          ),
+                          const SizedBox(height: 12),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              IconButton(
+                                icon: const Icon(
+                                  Icons.edit,
+                                  size: 28,
+                                  color: Colors.blue,
+                                ),
+                                onPressed: () {
+                                  // Handle edit action
+                                },
                               ),
-                              onPressed: () {
-                                // Handle delete action
-                              },
-                            ),
-                          ],
-                        ),
-                      ],
+                              IconButton(
+                                icon: const Icon(
+                                  Icons.delete,
+                                  size: 28,
+                                  color: Colors.red,
+                                ),
+                                onPressed: () {
+                                  // Handle delete action
+                                },
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 );
