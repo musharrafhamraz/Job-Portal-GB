@@ -108,6 +108,7 @@ class FirebaseServices {
 
       // Get the current user's UID
       String userId = FirebaseAuth.instance.currentUser!.uid;
+      String? userEmail = FirebaseAuth.instance.currentUser!.email;
 
       // Fetch the user's name from Firestore
       DocumentSnapshot userDoc =
@@ -118,6 +119,7 @@ class FirebaseServices {
       // Prepare application data
       final applicationData = {
         'userId': userId,
+        'userEmail': userEmail,
         'name': userName,
         'coverLetter': coverLetter,
         'resumeUrl': resumeUrl,

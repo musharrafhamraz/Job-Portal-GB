@@ -1,11 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:jobfinder/utility/send_email_function.dart';
 import 'package:jobfinder/widgets/main_button.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 void showApplicantDetails(
     BuildContext context, Map<String, dynamic> applicant) async {
   final applicantName = applicant['name'];
+  final applicantEmail = applicant['email'];
   final applicationDate = applicant['applicationDate'];
   final coverLetter = applicant['coverLetter'] ?? 'No cover letter';
   final resumeUrl = Uri.parse(applicant['resumeUrl']);
@@ -104,7 +107,57 @@ void showApplicantDetails(
 
                   const SizedBox(height: 16),
                   CustomButton(
-                    onPress: () {},
+                    onPress: () {
+                      final TextEditingController passwordController =
+                          TextEditingController();
+
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: const Text('Enter Password'),
+                            content: TextField(
+                              controller: passwordController,
+                              decoration:
+                                  const InputDecoration(labelText: 'Password'),
+                              obscureText: true, // Hide input
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context)
+                                      .pop(); // Close the dialog
+                                },
+                                child: const Text('Cancel'),
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  // Validate password
+                                  if (passwordController.text.isEmpty) {
+                                    Fluttertoast.showToast(
+                                      msg: 'Password cannot be empty.',
+                                      gravity: ToastGravity.BOTTOM,
+                                    );
+                                    return;
+                                  }
+
+                                  Navigator.of(context)
+                                      .pop(); // Close the dialog
+                                  sendEmail(
+                                    applicantEmail,
+                                    "Call for interview",
+                                    "You are requested to reach for the interview on a specific date.",
+                                    passwordController
+                                        .text, // Pass the validated password
+                                  );
+                                },
+                                child: const Text('Send Email'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
                     buttonTxt: const Text(
                       'Select Candidate',
                       style: TextStyle(color: Colors.white),
